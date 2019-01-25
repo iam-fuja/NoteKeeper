@@ -23,9 +23,23 @@ public final class CourseInfo implements Parcelable {
     private CourseInfo(Parcel source) {
         mCourseId = source.readString();
         mTitle = source.readString();
-        mModules = new ArrayList <>();
+        mModules = new ArrayList<>();
         source.readTypedList(mModules, ModuleInfo.CREATOR);
     }
+
+    /* this area was added. this controls the */
+
+    public static final Creator<CourseInfo> CREATOR = new Creator<CourseInfo>() {
+        @Override
+        public CourseInfo createFromParcel(Parcel in) {
+            return new CourseInfo(in);
+        }
+
+        @Override
+        public CourseInfo[] newArray(int size) {
+            return new CourseInfo[size];
+        }
+    };
 
     public String getCourseId() {
         return mCourseId;
@@ -42,20 +56,20 @@ public final class CourseInfo implements Parcelable {
     public boolean[] getModulesCompletionStatus() {
         boolean[] status = new boolean[mModules.size()];
 
-        for(int i=0; i < mModules.size(); i++)
+        for (int i = 0; i < mModules.size(); i++)
             status[i] = mModules.get(i).isComplete();
 
         return status;
     }
 
     public void setModulesCompletionStatus(boolean[] status) {
-        for(int i=0; i < mModules.size(); i++)
+        for (int i = 0; i < mModules.size(); i++)
             mModules.get(i).setComplete(status[i]);
     }
 
     public com.example.hp.notekeeper.ModuleInfo getModule(String moduleId) {
-        for(com.example.hp.notekeeper.ModuleInfo moduleInfo: mModules) {
-            if(moduleId.equals(moduleInfo.getModuleId()))
+        for (com.example.hp.notekeeper.ModuleInfo moduleInfo : mModules) {
+            if (moduleId.equals(moduleInfo.getModuleId()))
                 return moduleInfo;
         }
         return null;
@@ -89,12 +103,16 @@ public final class CourseInfo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable((Parcelable) mModules, 0);
+
+        //This code had an issue
+        //dest.writeParcelable( mModules, 0);
         dest.writeString(mCourseId);
         dest.writeString(mTitle);
+        dest.writeTypedList(mModules);
 
     }
-
+}
+/*
     public final static Parcelable.Creator<CourseInfo> CREATOR = new Parcelable.Creator<CourseInfo>(){
 
         @Override
@@ -109,4 +127,4 @@ public final class CourseInfo implements Parcelable {
     };
 
 
-}
+}*/

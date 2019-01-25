@@ -15,6 +15,8 @@ import java.util.List;
 public class NoteActivity extends AppCompatActivity {
     public static final String NOTE_INFO = "com.example.hp.notekeeper.NOTE_INFO" ;
     private NoteInfo mNote;
+    private boolean isNewNote;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,22 +36,25 @@ public class NoteActivity extends AppCompatActivity {
         EditText textNoteTitle = (EditText) findViewById(R.id.text_note_title);
         EditText textNoteText = (EditText) findViewById(R.id.text_note_text);
 
-        displayNote(spinnerCourses, textNoteTitle, textNoteText);
+         if(!isNewNote)
+            displayNote(spinnerCourses, textNoteTitle, textNoteText);
     }
 
     private void displayNote(Spinner spinnerCourses, EditText textNoteTitle, EditText textNoteText) {
         List<CourseInfo> courses = DataManager.getInstance().getCourses();
         int courseIndex = courses.indexOf(mNote.getCourse());
         spinnerCourses.setSelection(courseIndex);
-
-        textNoteTitle.setText(mNote.getText());
-        textNoteText.setText(mNote.getTitle());
+        textNoteTitle.setText(mNote.getTitle());
+        textNoteText.setText(mNote.getText());
 
     }
 
-    private void readDisplayStateValues() {
+   private void readDisplayStateValues() {
         Intent intent = getIntent();
         mNote = intent.getParcelableExtra(NOTE_INFO);
+       isNewNote = mNote == null;
+
+
     }
 
     @Override

@@ -74,6 +74,7 @@ public final class ModuleInfo implements Parcelable {
         dest.writeString(mModuleId);
         dest.writeString(mTitle);
         dest.writeByte((byte) 0);
+     //   dest.writeByte((byte)(mIsComplete ? 1 : 0));
     }
 
     public final static Parcelable.Creator<ModuleInfo> CREATOR = new Parcelable.Creator<ModuleInfo>(){
